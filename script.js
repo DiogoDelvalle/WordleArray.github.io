@@ -1,62 +1,64 @@
 let intentos = 6;
-const button = document.getElementById('guess-button');
-const input = document.getElementById("guess-input");
-const valor = input.value;
-const UrlApi= "https://random-word-api.herokuapp.com/word?length=5";
+const CANTLETRAS = 5;
+const BUTTON = document.getElementById("guess-button");
+
+
+BUTTON.addEventListener("click", intentar);
+const UrlApi= "https://random-word-api.herokuapp.com/word?lang=es&&length=5";
 
 fetch(UrlApi).then(Response=>Response.json())
     .then(Response=>{
         PALABRA=Response[0].toUpperCase();
     })
 .catch(err=>{
-  let diccionario = ['APPLE', 'HURLS', 'WINGS', 'YOUTH']
+    let diccionario = ["COMER","CORRE","ROMPE","CARRO","DANTE","COLOR","OSITO","COMPU","ARBOL","BICHO","PERRO"];
     const PALABRA= diccionario[Math.floor(Math.random()*diccionario.length)].toUpperCase();
 })
-
-button.addEventListener("click", intentar);
-
-function intentar() {
-  const INTENTO = leerIntento();
-  const GRID = document.getElementById("grid");
-  const ROW = document.createElement('div');
-  ROW.className = 'row';
-
-  if(INTENTO===palabra){
-    terminar("<h1>Ganaste :)</h1>");
-  }
-  for (let i in palabra) {
-    const SPAN = document.createElement('span');
-    SPAN.className = 'letter';
-    if (INTENTO[i] === palabra[i]) { //VERDE
-      SPAN.innerHTML = INTENTO[i];
-      SPAN.style.backgroundColor = 'green';
-    } else if (palabra.includes(INTENTO[i])) { //AMARILLO
-      SPAN.innerHTML = INTENTO[i];
-      SPAN.style.backgroundColor = 'yellow';
-    } else {      //GRIS
-      SPAN.innerHTML = INTENTO[i];
-      SPAN.style.backgroundColor = 'grey';
+function intentar(){
+    console.log(UrlApi);
+    const INTENTO= leerIntento();
+    if(INTENTO==PALABRA){
+        terminar("<h2>Felicidades ganaste!😄​👏</h2>​");
+        return;
     }
-    ROW.appendChild(SPAN)
-  }
-  intentos--;
-  if (intentos == 0) {
-    terminar("<h1>Perdiste :(</h1>")
-  }
-  GRID.appendChild(ROW)
+    const GRID = document.getElementById("grid");
+    const ROW = document.createElement("div");
+    ROW.className = "contenedor";
+    for(let i in PALABRA){
+        const SPAN = document.createElement("span");
+        SPAN.className = "letter";
+        if(PALABRA[i]===INTENTO[i]){
+            SPAN.innerHTML = INTENTO[i];
+            SPAN.style.backgroundColor = "green";
+        }
+        else if(PALABRA.includes(INTENTO[i])){
+            SPAN.innerHTML = INTENTO[i];
+            SPAN.style.backgroundColor = "yellow";
+        }
+        else{
+            SPAN.innerHTML = INTENTO[i];
+            SPAN.style.backgroundColor = "grey";
+        }
+        ROW.appendChild(SPAN)
+    }
+    GRID.appendChild(ROW);
+    intentos--
+    if(intentos===0){
+        terminar("<h2>Lo lamento perdiste 😢​🥀</h2>")
+    }
 }
 
-function leerIntento() {
-  let intento = document.getElementById("guess-input");
-  intento = intento.value;
-  intento = intento.toUpperCase();
-  return intento;
+
+function leerIntento(){
+    let valor= document.getElementById("guess-input").value;
+    valor= valor.toUpperCase();
+    return valor;
 }
 
-function terminar(mensaje) {
-  const INPUT = document.getElementById("guess-input");
-  INPUT.disabled = true;
-  button.disabled = true;
-  let contenedor = document.getElementById('guesses');
-  contenedor.innerHTML = mensaje;
+function terminar(mensaje){
+    const INPUT= document.getElementById("guess-input");
+    INPUT.disabled=true;
+    BUTTON.disabled=true;
+    let contenedor= document.getElementById("guesses");
+    contenedor.innerHTML= mensaje;
 }
