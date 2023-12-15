@@ -1,9 +1,19 @@
-let intentos = 5;
-let diccionario = ['APPLE', 'HURLS', 'WINGS', 'YOUTH']
+let intentos = 6;
+
 const palabra = diccionario[Math.floor(Math.random() * diccionario.length)];
 const button = document.getElementById('guess-button');
 const input = document.getElementById("guess-input");
 const valor = input.value;
+const UrlApi= "https://random-word-api.herokuapp.com/word?length=5";
+
+fetch(UrlApi).then(Response=>Response.json())
+    .then(Response=>{
+        PALABRA=Response[0].toUpperCase();
+    })
+.catch(err=>{
+  let diccionario = ['APPLE', 'HURLS', 'WINGS', 'YOUTH']
+    const PALABRA= diccionario[Math.floor(Math.random()*diccionario.length)].toUpperCase();
+})
 
 button.addEventListener("click", intentar);
 
