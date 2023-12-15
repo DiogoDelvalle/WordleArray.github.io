@@ -1,6 +1,4 @@
 let intentos = 6;
-
-const palabra = diccionario[Math.floor(Math.random() * diccionario.length)];
 const button = document.getElementById('guess-button');
 const input = document.getElementById("guess-input");
 const valor = input.value;
